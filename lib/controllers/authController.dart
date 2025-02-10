@@ -1,44 +1,45 @@
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:riders_cafe/Screen/Dashboard/dashboard.dart';
 import 'dart:convert';
 
+import 'package:riders_cafe/service/authservice.dart';
+
 class AuthController extends GetxController {
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
-  var isLoading = false.obs;
+  final authService = Get.find<AuthService>();
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  final isLoading = false.obs;
 
-  void login() async {
-  isLoading.value = true;
+  Future<void> login() async {
+    try {
+      isLoading.value = true;
+      final response = await http.post(
+        Uri.parse('http://localhost:3000/api/auth/login'),
+        body: jsonEncode({
+          "email": emailController.text.trim(),
+          "password": passwordController.text.trim(),
+        }),
+        headers: {"Content-Type": "application/json"},
+      );
 
-  try {
-    final response = await http.post(
-      Uri.parse('http://localhost:3000/api/auth/login'),
-      body: jsonEncode({
-        "email": emailController.text.trim(),
-        "password": passwordController.text.trim(),
-      }),
-      headers: {"Content-Type": "application/json"},
-    );
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        final token = data['token'];
 
-    if (response.statusCode == 200) {
-      // var data = jsonDecode(response.body);
-      
-      if (Get.context != null) {  // Ensure context exists
-        Get.snackbar("Success", "Login Successful");
+        if (Get.context != null) {
+          Get.snackbar("Success", "Login Successful");
+        }
+
+        authService.login(token, data['user']);
+        Get.offAll(() => DashboardScreen());
       }
-      // Navigate to Dashboard
-      // Get.offNamed('/dashboard');
-    } 
-    
-  } catch (e) {
-    print("Login Error: $e");
-    if (Get.context != null) {
-      Get.snackbar("Error", "Something went wrong");
+    } catch (e) {
+      Get.snackbar('Error', e.toString());
+    } finally {
+      isLoading.value = false;
     }
   }
-
-  isLoading.value = false;
-}
-
 }
