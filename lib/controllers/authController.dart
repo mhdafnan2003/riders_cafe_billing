@@ -1,8 +1,8 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:riders_cafe/Screen/Dashboard/dashboard.dart';
+import 'package:riders_cafe/Screen/Dashboard/superadmin/superadmin.dart';
 import 'dart:convert';
 
 import 'package:riders_cafe/service/authservice.dart';
@@ -28,13 +28,24 @@ class AuthController extends GetxController {
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         final token = data['token'];
+        final user = data['user'];
+
+       
+        authService.login(token, user);
 
         if (Get.context != null) {
           Get.snackbar("Success", "Login Successful");
         }
 
-        authService.login(token, data['user']);
-        Get.offAll(() => DashboardScreen());
+        // Check role from user object
+        if (user['role'] == 'Super Admin') {
+          Get.offAll(() => Superadmin());
+        } else {
+          Get.offAll(() => DashboardScreen());
+        }
+      } else {
+        final errorData = jsonDecode(response.body);
+        Get.snackbar('Error', errorData['message'] ?? 'Login failed');
       }
     } catch (e) {
       Get.snackbar('Error', e.toString());
