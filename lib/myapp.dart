@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:riders_cafe/Screen/Authentication/Login/loginscreen.dart';
-import 'package:riders_cafe/Screen/Dashboard/dashboard.dart';
+import 'package:riders_cafe/Screen/Panels/branch/dashboard/dashboard.dart';
 import 'package:riders_cafe/service/authservice.dart';
 
 class MyApp extends StatelessWidget {

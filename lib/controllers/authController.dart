@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:riders_cafe/Screen/Dashboard/dashboard.dart';
-import 'package:riders_cafe/Screen/Dashboard/superadmin/superadmin.dart';
+import 'package:riders_cafe/Screen/Panels/branch/dashboard/dashboard.dart';
+import 'package:riders_cafe/Screen/Panels/superadmin/superadmin.dart';
 import 'dart:convert';
 
 import 'package:riders_cafe/service/authservice.dart';
