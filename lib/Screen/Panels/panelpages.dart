@@ -26,8 +26,8 @@ class ScreensExample extends StatelessWidget {
 
         final screens = [
           const DashboardContent(),
-           ProductView(),
-          const Billing(),
+           AddProductScreen(),
+           Billing(),
           const Mapscreen(),
         ];
 

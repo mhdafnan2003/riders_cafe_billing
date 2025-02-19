@@ -65,19 +65,23 @@ class ProductController extends GetxController {
           if (kDebugMode) {
             print('Response body: ${response.body}');
           }
-        } catch (e) {
-          if (kDebugMode) {
-            print('Error parsing response: $e');
-          }
-        }
-
-        Get.snackbar(
+          if (response.statusCode == 201) {
+          Get.snackbar(
           'Success',
           'Product added successfully',
           snackPosition: SnackPosition.BOTTOM,
           backgroundColor: TColor.primary,
           colorText: Colors.white,
         );
+        }
+        } catch (e) {
+          if (kDebugMode) {
+            print('Error parsing response: $e');
+          }
+        }
+        
+
+        
 
         // Clear form
         clearForm();
